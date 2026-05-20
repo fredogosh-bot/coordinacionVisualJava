@@ -38,7 +38,7 @@ public class Gestor {
         frame.add(barraDesplazamiento);
 
         ArrayList<Estadistica> listaRegistros = new ArrayList<>();
-        String nombreArchivo = "test.csv"; // El archivo de tu compañero
+        String nombreArchivo = "test.csv"; // El archivo que se tiene que utilizar
         String linea;
 
         try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
@@ -52,10 +52,9 @@ public class Gestor {
                 int errores = Integer.parseInt(datos[2].trim());
                 String tiempo = datos[3].trim();
                 
-                // Guardamos en la lista por si necesitas filtrar después
+                // Los datos en estricto orden
                 listaRegistros.add(new Estadistica(curp, errores, ejercicio, tiempo));
                 
-                // Acumulamos el texto formateado
                 contenidoConsolidado.append("ID: ").append(curp)
                                     .append("  |  Ejercicio: ").append(ejercicio)
                                     .append("  |  Errores: ").append(errores)
@@ -66,7 +65,7 @@ public class Gestor {
             textArea.setText(contenidoConsolidado.toString());
 
         } catch (IOException ex) {
-            // Si el archivo de tu compañero no está o falla, avisamos en pantalla
+            // Si ocurre un error al leer el archivo, se muestra un mensaje de error para informar al usuario
             JOptionPane.showMessageDialog(frame, "Error al cargar los datos automáticamente: " + ex.getMessage());
             textArea.setText("No se pudieron cargar los registros.");
         }
