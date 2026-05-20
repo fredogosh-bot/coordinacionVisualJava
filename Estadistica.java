@@ -1,20 +1,20 @@
-public class Estadisticas {
+public class Estadistica {
     
-    public int IdAdulto;
+    public String curp;
     public int errores;
     public String ejercicio;
     public String tiempo;
 
 
-    public Estadisticas(int IdAdulto, int errores, String ejercicio, String tiempo) {
-        this.IdAdulto = IdAdulto;
+    public Estadistica(String curp, int errores, String ejercicio, String tiempo) {
+        this.curp = curp;
         this.errores = errores;
         this.ejercicio = ejercicio;
         this.tiempo = tiempo;
     }
 
-    public int getIdAdulto() {
-        return IdAdulto;
+    public String getcurp() {
+        return curp;
     }
 
     public int getErrores() {
