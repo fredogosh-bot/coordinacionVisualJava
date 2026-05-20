@@ -5,6 +5,14 @@ public class Estadisticas {
     public String ejercicio;
     public String tiempo;
 
+
+    public Estadisticas(int IdAdulto, int errores, String ejercicio, String tiempo) {
+        this.IdAdulto = IdAdulto;
+        this.errores = errores;
+        this.ejercicio = ejercicio;
+        this.tiempo = tiempo;
+    }
+
     public int getIdAdulto() {
         return IdAdulto;
     }
