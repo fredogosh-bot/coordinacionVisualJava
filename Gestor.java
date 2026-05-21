@@ -3,6 +3,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,41 +25,54 @@ public class Gestor {
 
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame("Gestor de Ejercicios");
-        frame.setSize(500, 700);
+        JFrame frame = new JFrame("Gestor de Estadisticas");
+        frame.setSize(590, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setLayout(null);
+
+        // === 1. COMPONENTES DE BÚSQUEDA (Arriba) ===
+        JTextField campoBusqueda = new JTextField();
+        campoBusqueda.setBounds(20, 20, 230, 30);
+        frame.add(campoBusqueda);
+
+        JButton botonBuscar = new JButton("Buscar CURP");
+        botonBuscar.setBounds(260, 20, 130, 30);
+        frame.add(botonBuscar);
+
+        JButton botonMostrarTodo = new JButton("Mostrar Todo");
+        botonMostrarTodo.setBounds(400, 20, 130, 30);
+        frame.add(botonMostrarTodo);
 
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
 
         JScrollPane barraDesplazamiento = new JScrollPane(textArea);
-        barraDesplazamiento.setBounds(20, 20, 440, 620);
+        barraDesplazamiento.setBounds(20, 20, 550, 620);
         frame.add(barraDesplazamiento);
 
         ArrayList<Estadistica> listaRegistros = new ArrayList<>();
-        String nombreArchivo = "test.csv"; // El archivo que se tiene que utilizar
+        String nombreArchivo = "Estadisticas/test.csv"; // El archivo que se tiene que utilizar
         String linea;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
+        try (BufferedReader lectorDatos = new BufferedReader(new FileReader(nombreArchivo))) {
             StringBuilder contenidoConsolidado = new StringBuilder("=== REGISTROS DETECTADOS ===\n\n");
             
-            while ((linea = br.readLine()) != null) {
+            while ((linea = lectorDatos.readLine()) != null) {
                 String[] datos = linea.split(",");
-                
                 String curp = datos[0].trim();
-                String ejercicio = datos[1].trim();
-                int errores = Integer.parseInt(datos[2].trim());
+                int errores = Integer.parseInt(datos[1].trim());
+                String ejercicio = datos[2].trim();
+
                 String tiempo = datos[3].trim();
                 
                 // Los datos en estricto orden
                 listaRegistros.add(new Estadistica(curp, errores, ejercicio, tiempo));
                 
-                contenidoConsolidado.append("ID: ").append(curp)
-                                    .append("  |  Ejercicio: ").append(ejercicio)
-                                    .append("  |  Errores: ").append(errores)
-                                    .append("  |  Tiempo: ").append(tiempo).append("\n");
+                contenidoConsolidado.append("CURP: ").append(curp)
+                                    .append(" |  Ejercicio: ").append(ejercicio)
+                                    .append(" |  Errores: ").append(errores)
+                                    .append(" |  Tiempo: ").append(tiempo).append("\n");
             }
             
             // Colocamos todo el texto acumulado dentro del JTextArea

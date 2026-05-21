@@ -13,21 +13,4 @@ public class Estadistica {
         this.tiempo = tiempo;
     }
 
-    public String getcurp() {
-        return curp;
-    }
-
-    public int getErrores() {
-        return errores;
-    }
-    public String getEjercicio() {
-        return ejercicio;
-    }
-    public String getTiempo() {
-        return tiempo;
-    }
-    public void setTiempo(String tiempo) {
-        this.tiempo = tiempo;
-    }
-
 }
