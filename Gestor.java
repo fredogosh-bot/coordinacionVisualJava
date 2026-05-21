@@ -19,7 +19,7 @@ public class Gestor {
 
 
     // Metodo para actualizar el área de texto con los datos de la lista de estadisticas
-    private static void actualizarAreaTexto(ArrayList<Estadistica> lista, JTextArea textArea) {
+    private static void mostrarDatos(ArrayList<Estadistica> lista, JTextArea textArea) {
         StringBuilder contenido = new StringBuilder("=== REGISTROS ===\n\n");
         
         for (Estadistica est : lista) {
@@ -73,7 +73,7 @@ public class Gestor {
         frame.add(barraDesplazamiento);
 
         ArrayList<Estadistica> listaRegistros = new ArrayList<>();
-        String nombreArchivo = "Estadisticas/test.csv"; // El archivo que se tiene que utilizar
+        String nombreArchivo = "Estadisticas/Estadisticas.csv"; // El archivo que se tiene que utilizar
         String linea;
 
         //LECTURA DE ARCHIVO
@@ -91,7 +91,7 @@ public class Gestor {
                 listaRegistros.add(new Estadistica(curp, errores, ejercicio, tiempo));
             }
 
-            actualizarAreaTexto(listaRegistros, textArea);
+            mostrarDatos(listaRegistros, textArea);
             
 
         } catch (IOException ex) {
@@ -102,6 +102,9 @@ public class Gestor {
         
         botonBuscar.addActionListener(new ActionListener() {
             @Override
+
+            //action performed() es el metodo que se utiliza para filtrar los datos.
+            //es decir actionPerformed() = filtrarDatos() en los diagramas
             public void actionPerformed(ActionEvent e) {
                 String curpBuscada = campoBusqueda.getText().trim();
                 
@@ -124,7 +127,7 @@ public class Gestor {
                     JOptionPane.showMessageDialog(frame, "No se encontró ningún registro para la CURP: " + curpBuscada);
                 } else {
                     // Refrescamos la pantalla solo con los resultados encontrados
-                    actualizarAreaTexto(resultadosFiltrados, textArea);
+                    mostrarDatos(resultadosFiltrados, textArea);
                 }
             }
         });
@@ -134,7 +137,7 @@ public class Gestor {
             @Override
             public void actionPerformed(ActionEvent e) {
                 campoBusqueda.setText(""); // Limpiamos la barra
-                actualizarAreaTexto(listaRegistros, textArea); // Restauramos todos los datos
+                mostrarDatos(listaRegistros, textArea); // Restauramos todos los datos
             }
         });
 
