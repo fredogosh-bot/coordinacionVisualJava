@@ -1,6 +1,6 @@
-import java.io.Serializable;
 
-public class Resultado implements Serializable {
+
+public class Resultado {
     private int errores;
     private long cronometro;
     private String IdAdulto;
