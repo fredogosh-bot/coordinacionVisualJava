@@ -21,6 +21,16 @@ public class Resultado {
         this.cronometro = cronometro;
     }
 
+
+    public String convertidorTiempo(long segundos){
+
+        long minutos = segundos / 60;
+        long segundosRestantes = segundos % 60;
+    
+        String tiempoFormateado = String.format("%02d:%02d", minutos, segundosRestantes);
+        return tiempoFormateado;
+    }
+
     public int getErrores() {
         return errores;
     }
@@ -37,20 +47,5 @@ public class Resultado {
         return ejercicio;
     }
 
-    public void setErrores(int errores) {
-        this.errores = errores;
-    }
-
-    public void setCronometro(long cronometro) {
-        this.cronometro = cronometro;
-    }
-
-    public void setIdAdulto(String IdAdulto) {
-        this.IdAdulto = IdAdulto;
-    }
-
-    public void setEjercicio(String ejercicio) {
-        this.ejercicio = ejercicio;
-    }
 
 }

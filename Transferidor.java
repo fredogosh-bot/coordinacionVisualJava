@@ -9,7 +9,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-public class TransferidorKiosco extends JFrame {
+public class Transferidor extends JFrame {
 
     private JLabel etiquetaArchivo;
     private JButton botonSeleccionar;
@@ -19,7 +19,7 @@ public class TransferidorKiosco extends JFrame {
     // Cambia esto por la ruta de montaje de tu USB (ej. "E:\\" en Windows o "/media/usuario/MI_USB" en Linux)
     private final String RUTA_USB = "/media/tu_usuario/NOMBRE_USB/"; 
 
-    public TransferidorKiosco() {
+    public Transferidor() {
         super("Asistente de Transferencia Única");
         setSize(450, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +48,7 @@ public class TransferidorKiosco extends JFrame {
                 explorador.setDialogTitle("Seleccione el archivo a transferir");
                 explorador.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 
-                int resultado = explorador.showOpenDialog(TransferidorKiosco.this);
+                int resultado = explorador.showOpenDialog(Transferidor.this);
                 
                 if (resultado == JFileChooser.APPROVE_OPTION) {
                     archivoSeleccionado = explorador.getSelectedFile();
@@ -67,7 +67,7 @@ public class TransferidorKiosco extends JFrame {
 
                 // Validación de hardware: ¿La USB está realmente conectada?
                 if (!carpetaDestino.exists() || !carpetaDestino.canWrite()) {
-                    JOptionPane.showMessageDialog(TransferidorKiosco.this, 
+                    JOptionPane.showMessageDialog(Transferidor.this, 
                         "Error: No se detecta la USB o no se tienen permisos de escritura.", 
                         "Dispositivo No Encontrado", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -80,7 +80,7 @@ public class TransferidorKiosco extends JFrame {
                     // Copia binaria directa (reemplaza si ya existe un archivo con el mismo nombre)
                     Files.copy(archivoSeleccionado.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     
-                    JOptionPane.showMessageDialog(TransferidorKiosco.this, 
+                    JOptionPane.showMessageDialog(Transferidor.this, 
                         "¡Archivo transferido con éxito a la USB!", 
                         "Operación Exitosa", JOptionPane.INFORMATION_MESSAGE);
                         
@@ -90,7 +90,7 @@ public class TransferidorKiosco extends JFrame {
                     botonTransferir.setEnabled(false);
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(TransferidorKiosco.this, 
+                    JOptionPane.showMessageDialog(Transferidor.this, 
                         "Error al transferir el archivo: " + ex.getMessage(), 
                         "Fallo de E/S", JOptionPane.ERROR_MESSAGE);
                 }
@@ -101,7 +101,7 @@ public class TransferidorKiosco extends JFrame {
     public static void main(String[] args) {
         // Ejecutamos la interfaz gráfica
         javax.swing.SwingUtilities.invokeLater(() -> {
-            new TransferidorKiosco().setVisible(true);
+            new Transferidor().setVisible(true);
         });
     }
 }

@@ -28,7 +28,7 @@ public class ArchivoResultados extends JFrame {
         // carpeta contenedora 
         File directorioPadre = archivo.getParentFile();
         
-        // SEGURIDAD: Si la carpeta no existe, la creamos dinamicamente
+        // SEGURIDAD: Si la carpeta no existe, se crea dinamicamente
         if (directorioPadre != null && !directorioPadre.exists()) {
             // mkdirs() crea la carpeta
             directorioPadre.mkdirs(); 
@@ -40,10 +40,10 @@ public class ArchivoResultados extends JFrame {
             String id = resultado.getIdAdulto();
             String ejercicio = resultado.getEjercicio();
             int errores = resultado.getErrores();
-            long tiempo = resultado.getCronometro();
+            String tiempo = resultado.convertidorTiempo(resultado.getCronometro());
             
             //
-            String lineaCSV = String.format("%s,%s,%d,%d", id, ejercicio, errores, tiempo);
+            String lineaCSV = String.format("%s,%s,%d,%s", id, ejercicio, errores, tiempo);
             
             escritor.write(lineaCSV);
             escritor.newLine(); // salto de linea para el siguiente registro
@@ -94,17 +94,14 @@ public class ArchivoResultados extends JFrame {
             tiempoTranscurridoSegundos
         );
 
-        // 3. Le pedimos al controlador que lo mande a guardar al disco duro
+        // 3. el controlador lo guarda en el disco duro
         boolean exito = guardarResultado(nuevoResultado);
 
         // 4. Avisamos al usuario del estatus de la operación gráfica
         if (exito) {
-            JOptionPane.showMessageDialog(this, "¡Ejercicio finalizado y datos guardados de forma segura!", 
+            JOptionPane.showMessageDialog(this, "¡Ejercicio finalizado!", 
                                           "Registro Guardado", JOptionPane.INFORMATION_MESSAGE);
-            botonFinalizar.setEnabled(false); // Deshabilitamos para evitar doble envío
-        } else {
-            JOptionPane.showMessageDialog(this, "No se pudieron salvar las estadísticas en el archivo.", 
-                                          "Error de Archivo", JOptionPane.ERROR_MESSAGE);
+            //botonFinalizar.setEnabled(false); // se utiliza para evitar doble envío
         }
     }
 
