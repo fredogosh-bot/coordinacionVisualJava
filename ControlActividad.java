@@ -9,7 +9,8 @@ public class ControlActividad{
     private long tiempoInicio;
     private long ultimoTiempoActividad;
     
-    private Resultados resultadoControl = new Resultados();
+    private Resultado resultadoControl = new Resultado();
+    private ArchivoResultados manejadorArchivos = new ArchivoResultados();
     
    
     int i = 0;
@@ -90,6 +91,22 @@ public class ControlActividad{
         this.colorSeleccionado = "";
         this.formaSeleccionada = "";
     }
+
+    public void guardarResultadosSesion() {
+        // Detenemos el reloj y calculamos los segundos totales
+        long tiempoFin = System.currentTimeMillis();
+        long segundosTranscurridos = (tiempoFin - this.tiempoInicio) / 1000;
+        
+        // Inyectamos el tiempo final en tu entidad
+        resultadoControl.setCronometro(segundosTranscurridos);
+        
+        // Mandamos a guardar usando tu controlador de archivos
+        boolean exito = manejadorArchivos.guardarResultado(resultadoControl);
+        
+        if (!exito) {
+            System.err.println("Advertencia: No se pudo escribir el archivo CSV.");
+        }
+    }
     
 private void finalizarTira() {
     if (timerInactividad != null) timerInactividad.stop();
@@ -97,6 +114,8 @@ private void finalizarTira() {
     if (patron.hayMasEjercicios()) {
         pantalla.mostrarBotonSiguiente();
     } else {
+
+        guardarResultadosSesion();
         JOptionPane.showMessageDialog(null,
             "¡Has completado todos los ejercicios!",
             "Fin", JOptionPane.INFORMATION_MESSAGE);

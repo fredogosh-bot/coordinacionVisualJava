@@ -1,6 +1,7 @@
 
 
 public class Resultado {
+    
     private int errores;
     private long cronometro;
     private String idAdulto;
@@ -39,6 +40,16 @@ public class Resultado {
     public String getEjercicio() {
         return ejercicio;
     }
+
+    public void setErrores(int errores) {
+        this.errores = errores;
+    }
+
+    public void setCronometro(long cronometro) {
+        this.cronometro = cronometro;
+    }
+
+
 
 
 }

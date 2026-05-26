@@ -3,6 +3,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,15 +17,13 @@ public class Transferidor extends JFrame {
     private JButton botonTransferir;
     
     private File archivoSeleccionado = null;
-    // Cambia esto por la ruta de montaje de tu USB (ej. "E:\\" en Windows o "/media/usuario/MI_USB" en Linux)
-    private final String RUTA_USB = "/media/tu_usuario/NOMBRE_USB/"; 
 
     public Transferidor() {
         super("Asistente de Transferencia Única");
         setSize(450, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        setLocationRelativeTo(null); // Centra la ventana
+        setLocationRelativeTo(null); 
 
         // 1. Componentes visuales
         etiquetaArchivo = new JLabel("Ningún archivo seleccionado.");
@@ -37,54 +36,63 @@ public class Transferidor extends JFrame {
 
         botonTransferir = new JButton("Transferir a USB");
         botonTransferir.setBounds(230, 70, 180, 35);
-        botonTransferir.setEnabled(false); // Apagado hasta que elijan un archivo
+        botonTransferir.setEnabled(false); 
         add(botonTransferir);
 
-        // 2. Lógica para SELECCIONAR el archivo (Sin poder abrirlo)
+        // 2. Lógica para SELECCIONAR el archivo
         botonSeleccionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser explorador = new JFileChooser();
-                explorador.setDialogTitle("Seleccione el archivo a transferir");
+                explorador.setDialogTitle("Seleccione el registro a transferir");
                 explorador.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                
+                // MEJORA 1: Abrir directamente en la carpeta Resultados
+                File carpetaResultados = new File("RESULTADOS");
+                // Si la carpeta existe, apuntamos el explorador hacia alla
+                if (carpetaResultados.exists()) {
+                    explorador.setCurrentDirectory(carpetaResultados);
+                }
+
+                // MEJORA 1.1: Filtrar para que SOLO se vean archivos CSV
+                FileNameExtensionFilter filtroCSV = new FileNameExtensionFilter("Archivos de Resultados (*.csv)", "csv");
+                explorador.setFileFilter(filtroCSV);
+                explorador.setAcceptAllFileFilterUsed(false); // Apaga la opcion de "Todos los archivos"
                 
                 int resultado = explorador.showOpenDialog(Transferidor.this);
                 
                 if (resultado == JFileChooser.APPROVE_OPTION) {
                     archivoSeleccionado = explorador.getSelectedFile();
-                    // Solo mostramos el nombre en la interfaz, el usuario no puede ejecutarlo
                     etiquetaArchivo.setText("Archivo listo: " + archivoSeleccionado.getName());
-                    botonTransferir.setEnabled(true); // Encendemos el botón de copia
+                    botonTransferir.setEnabled(true); 
                 }
             }
         });
 
-        // 3. Lógica para COPIAR en segundo plano
+        // 3. Lógica para COPIAR en la USB Automática
         botonTransferir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File carpetaDestino = new File(RUTA_USB);
+                
+                // MEJORA 2: Buscar la USB de forma automatica
+                File carpetaDestino = detectarUSB();
 
-                // Validación de hardware: ¿La USB está realmente conectada?
-                if (!carpetaDestino.exists() || !carpetaDestino.canWrite()) {
+                if (carpetaDestino == null) {
                     JOptionPane.showMessageDialog(Transferidor.this, 
-                        "Error: No se detecta la USB o no se tienen permisos de escritura.", 
-                        "Dispositivo No Encontrado", JOptionPane.ERROR_MESSAGE);
+                        "Error: No se ha detectado ninguna memoria USB conectada o no hay permisos.", 
+                        "USB No Encontrada", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 try {
-                    // Construimos la ruta de destino exacta dentro de la USB
                     File archivoDestino = new File(carpetaDestino, archivoSeleccionado.getName());
                     
-                    // Copia binaria directa (reemplaza si ya existe un archivo con el mismo nombre)
                     Files.copy(archivoSeleccionado.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     
                     JOptionPane.showMessageDialog(Transferidor.this, 
-                        "¡Archivo transferido con éxito a la USB!", 
+                        "¡Archivo transferido con éxito a la USB!\nDestino: " + archivoDestino.getAbsolutePath(), 
                         "Operación Exitosa", JOptionPane.INFORMATION_MESSAGE);
                         
-                    // Reiniciamos la interfaz por seguridad
                     archivoSeleccionado = null;
                     etiquetaArchivo.setText("Ningún archivo seleccionado.");
                     botonTransferir.setEnabled(false);
@@ -98,8 +106,40 @@ public class Transferidor extends JFrame {
         });
     }
 
+    /**
+     * Metodo Inteligente para buscar una USB conectada dependiendo del Sistema Operativo.
+     * @return El directorio raiz de la USB o null si no encuentra nada.
+     */
+    private File detectarUSB() {
+        String sistemaOperativo = System.getProperty("os.name").toLowerCase();
+
+        // LOGICA PARA WINDOWS
+        if (sistemaOperativo.contains("win")) {
+            File[] raices = File.listRoots(); // Devuelve C:\, D:\, E:\, etc.
+            for (File raiz : raices) {
+                // Ignoramos el disco principal C: y buscamos el primer disco con escritura (E:\, F:\...)
+                if (!raiz.getAbsolutePath().toLowerCase().contains("c:") && raiz.canWrite()) {
+                    return raiz; // Retorna la primera USB que encuentre
+                }
+            }
+        } 
+        // LOGICA PARA LINUX (Ubuntu, Mint, Zorin, etc.)
+        else if (sistemaOperativo.contains("nix") || sistemaOperativo.contains("nux") || sistemaOperativo.contains("aix")) {
+            String usuario = System.getProperty("user.name");
+            File rutaMedia = new File("/media/" + usuario); // Generalmente las USB se montan aqui
+            
+            if (rutaMedia.exists() && rutaMedia.isDirectory()) {
+                File[] usbsConectadas = rutaMedia.listFiles();
+                if (usbsConectadas != null && usbsConectadas.length > 0) {
+                    return usbsConectadas[0]; // Retorna la primera USB conectada en esa carpeta
+                }
+            }
+        }
+        
+        return null; // Si no encuentra nada, devuelve nulo
+    }
+
     public static void main(String[] args) {
-        // Ejecutamos la interfaz gráfica
         javax.swing.SwingUtilities.invokeLater(() -> {
             new Transferidor().setVisible(true);
         });
