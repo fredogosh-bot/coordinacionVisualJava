@@ -16,7 +16,7 @@ public class ArchivoResultados extends JFrame {
 
     // Variables simuladas que vendrían del estado actual de tu aplicación
     private String idAdultoActual = "HEGA000001HDFRRL21";
-    private String ejercicioActual = "Ejercicio de Coordinación 1";
+    private String ejercicioActual = "Ejercicio de Coordinación1";
     private int erroresCometidos = 233;
     private long tiempoTranscurridoSegundos = 544; 
 
@@ -87,12 +87,7 @@ public class ArchivoResultados extends JFrame {
         }
 
         // 2. aqui se crea un nuevo Objeto Resultado 
-        Resultado nuevoResultado = new Resultado(
-            idAdultoActual, 
-            ejercicioActual, 
-            erroresCometidos, 
-            tiempoTranscurridoSegundos
-        );
+        Resultado nuevoResultado = new Resultado();
 
         // 3. el controlador lo guarda en el disco duro
         boolean exito = guardarResultado(nuevoResultado);

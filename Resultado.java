@@ -3,22 +3,15 @@
 public class Resultado {
     private int errores;
     private long cronometro;
-    private String IdAdulto;
+    private String idAdulto;
     private String ejercicio;
 
 
     public Resultado() {
-        this.IdAdulto = "HEGA000001HDFRRL21";
+        this.idAdulto = "HEGA000001HDFRRL21";
         this.ejercicio = "Ejercicio 1";
         this.errores = 0;
         this.cronometro = 0;
-    }
-
-    public Resultado(String IdAdulto, String ejercicio, int errores, long cronometro) {
-        this.IdAdulto = IdAdulto;
-        this.ejercicio = ejercicio;
-        this.errores = errores;
-        this.cronometro = cronometro;
     }
 
 
@@ -40,7 +33,7 @@ public class Resultado {
     }
 
     public String getIdAdulto() {
-        return IdAdulto;
+        return idAdulto;
     }
 
     public String getEjercicio() {
