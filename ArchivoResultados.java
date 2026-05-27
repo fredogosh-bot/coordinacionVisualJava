@@ -1,15 +1,38 @@
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 public class ArchivoResultados {
 
     private final String nombreArchivo = "RESULTADOS/Resultados.csv";
 
     // Variables simuladas que vendrían del estado actual de tu aplicación
     
-    
+    public boolean prepararArchivoNuevo() {
+        File archivo = new File(nombreArchivo);
+        File directorioPadre = archivo.getParentFile();
+        
+        if (directorioPadre != null && !directorioPadre.exists()) {
+            directorioPadre.mkdirs(); 
+        }
+
+        try {
+            // Si el archivo no existe, lo crea. Si ya existe, no lo borra.
+            if (!archivo.exists()) {
+                archivo.createNewFile();
+                
+                // Opcional: Podrías escribir los encabezados del CSV aquí
+                try (FileWriter escritor = new FileWriter(archivo)) {
+                    escritor.write("CURP,Ejercicio,Errores,Tiempo\n");
+                }
+            }
+            return true;
+        } catch (IOException e) {
+            System.err.println("Error al preparar el archivo: " + e.getMessage());
+            return false;
+        }
+    }
 
     public boolean guardarResultado(Resultado resultadoActual) {
 
@@ -28,7 +51,7 @@ public class ArchivoResultados {
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nombreArchivo, true))) {
             
-            String id = resultadoActual.getIdAdulto();
+            String id = resultadoActual.getCurp();
             String ejercicio = resultadoActual.getEjercicio();
             int errores = resultadoActual.getErrores();
             String tiempo = resultadoActual.convertidorTiempo(resultadoActual.getCronometro());

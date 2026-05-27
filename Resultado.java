@@ -4,12 +4,12 @@ public class Resultado {
     
     private int errores;
     private long cronometro;
-    private String idAdulto;
+    private String curp;
     private String ejercicio;
 
 
     public Resultado() {
-        this.idAdulto = "HEGA000001HDFRRL21";
+        this.curp = "SIN_ASIGNAR";
         this.ejercicio = "Ejercicio 1";
         this.errores = 0;
         this.cronometro = 0;
@@ -33,8 +33,8 @@ public class Resultado {
         return cronometro;
     }
 
-    public String getIdAdulto() {
-        return idAdulto;
+    public String getCurp() {
+        return curp;
     }
 
     public String getEjercicio() {
@@ -49,7 +49,9 @@ public class Resultado {
         this.cronometro = cronometro;
     }
 
-
+    public void setCurp(String curp) {
+        this.curp = curp;
+    }
 
 
 }

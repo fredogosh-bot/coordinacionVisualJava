@@ -1,4 +1,5 @@
 import javax.swing.JOptionPane;
+import java.io.File;
 
 public class ControlActividad{
     
