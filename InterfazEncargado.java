@@ -20,6 +20,16 @@ public class InterfazEncargado extends JFrame {
 
     private ArchivoResultados manejadorArchivos = new ArchivoResultados();
 
+    public boolean validarCurp(String curpPendiente){
+        if (curpPendiente.isEmpty() || curpPendiente.length() < 18) {
+        JOptionPane.showMessageDialog(InterfazEncargado.this, 
+            "Por favor, ingrese una CURP válida (18 caracteres).", 
+            "Dato inválido", JOptionPane.WARNING_MESSAGE);
+        return false;
+        }
+        return true;
+    }
+
     public InterfazEncargado() {
         super("Panel del Encargado - Nueva Sesión");
         setSize(400, 200);
@@ -45,16 +55,13 @@ public class InterfazEncargado extends JFrame {
                 String curpIngresada = campoCurp.getText().trim();
 
                 // Validación básica
-                if (curpIngresada.isEmpty() || curpIngresada.length() < 18) {
-                    JOptionPane.showMessageDialog(InterfazEncargado.this, 
-                        "Por favor, ingrese una CURP válida.", 
-                        "Dato inválido", JOptionPane.WARNING_MESSAGE);
+                
+                if (!validarCurp(curpIngresada)) {
                     return;
                 }
-                
 
                 sesionActual.establecerCurp(curpIngresada);
-
+                System.out.println("CURP establecida en la sesión: " + sesionActual.obtenerCurp());
                 // Aqui se crea el archivo
                 boolean exito = manejadorArchivos.prepararArchivoNuevo();
 
