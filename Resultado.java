@@ -15,14 +15,12 @@ public class Resultado {
         this.cronometro = 0;
     }
 
+    public String convertidorTiempo(long tiempoEnMilisegundos) {
+        long minutos = tiempoEnMilisegundos / 60000;
+        long segundos = (tiempoEnMilisegundos % 60000) / 1000;
+        long milisegundosRestantes = tiempoEnMilisegundos % 1000;
 
-    public String convertidorTiempo(long segundos){
-
-        long minutos = segundos / 60;
-        long segundosRestantes = segundos % 60;
-    
-        String tiempoFormateado = String.format("%02d:%02d", minutos, segundosRestantes);
-        return tiempoFormateado;
+        return String.format("%02d:%02d.%03d", minutos, segundos, milisegundosRestantes);
     }
 
     public int getErrores() {

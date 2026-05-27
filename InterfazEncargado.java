@@ -6,10 +6,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedWriter;
 
 /**
  * FRONTERA: Interfaz exclusiva para el Encargado del centro.
@@ -19,6 +15,8 @@ public class InterfazEncargado extends JFrame {
     private JTextField campoCurp;
     private JButton botonCrearSesion;
     private JLabel etiquetaInstruccion;
+
+    private Resultado sesionActual = new Resultado();
 
     private ArchivoResultados manejadorArchivos = new ArchivoResultados();
 
@@ -47,18 +45,17 @@ public class InterfazEncargado extends JFrame {
                 String curpIngresada = campoCurp.getText().trim();
 
                 // Validación básica
-                if (curpIngresada.isEmpty() || curpIngresada.length() < 10) {
+                if (curpIngresada.isEmpty() || curpIngresada.length() < 18) {
                     JOptionPane.showMessageDialog(InterfazEncargado.this, 
                         "Por favor, ingrese una CURP válida.", 
                         "Dato inválido", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
+                
 
-                // 1. Preparamos la Entidad con el nuevo setCurp()
-                Resultado sesionActual = new Resultado();
                 sesionActual.setCurp(curpIngresada);
 
-                // 2. Le pedimos al controlador que cree el archivo base
+                // Aqui se crea el archivo
                 boolean exito = manejadorArchivos.prepararArchivoNuevo();
 
                 if (exito) {
