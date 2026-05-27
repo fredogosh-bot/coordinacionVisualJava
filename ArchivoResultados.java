@@ -47,27 +47,6 @@ public class ArchivoResultados {
         }
     }
 
-    /*Forma de como utilizar el metodo guardarResultado() dentro de la interfaz gráfica, se puede adaptar a tu diseño actual
-    public ArchivoResultados() {
-        super("Archivos de Resultados");
-        setLayout(null); // O el layout que decidas usar
-
-        botonFinalizar = new JButton("Finalizar Ejercicio");
-        botonFinalizar.setBounds(100, 100, 200, 40);
-        
-        botonFinalizar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evento){
-                agregarResultado();
-            }
-        });
-
-        add(botonFinalizar);
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }*/
 
     
 }
