@@ -7,7 +7,11 @@ public class ArchivoResultados {
 
     private final String nombreArchivo = "RESULTADOS/Resultados.csv";
 
-    // Variables simuladas que vendrían del estado actual de tu aplicación
+    
+    private void generarArchivoFisico(File archivoBase) throws IOException {
+        
+        archivoBase.createNewFile();
+    }
     
     public boolean prepararArchivoNuevo() {
         File archivo = new File(nombreArchivo);
@@ -20,9 +24,9 @@ public class ArchivoResultados {
         try {
             // Si el archivo no existe, lo crea. Si ya existe, no lo borra.
             if (!archivo.exists()) {
-                archivo.createNewFile();
+                generarArchivoFisico(archivo);
                 
-                // Opcional: Podrías escribir los encabezados del CSV aquí
+                // podrá escribir los encabezados del CSV aquí
                 try (FileWriter escritor = new FileWriter(archivo)) {
                     escritor.write("CURP,Ejercicio,Errores,Tiempo\n");
                 }
@@ -51,10 +55,10 @@ public class ArchivoResultados {
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nombreArchivo, true))) {
             
-            String id = resultadoActual.getCurp();
-            String ejercicio = resultadoActual.getEjercicio();
-            int errores = resultadoActual.getErrores();
-            String tiempo = resultadoActual.convertidorTiempo(resultadoActual.getCronometro());
+            String id = resultadoActual.obtenerCurp();
+            String ejercicio = resultadoActual.obtenerEjercicio();
+            int errores = resultadoActual.obtenerErrores();
+            String tiempo = resultadoActual.convertidorTiempo(resultadoActual.obtenerCronometro());
             
             //
             String lineaCSV = String.format("%s,%s,%d,%s", id, ejercicio, errores, tiempo);

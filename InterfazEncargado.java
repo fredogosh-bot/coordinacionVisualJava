@@ -53,7 +53,7 @@ public class InterfazEncargado extends JFrame {
                 }
                 
 
-                sesionActual.setCurp(curpIngresada);
+                sesionActual.establecerCurp(curpIngresada);
 
                 // Aqui se crea el archivo
                 boolean exito = manejadorArchivos.prepararArchivoNuevo();

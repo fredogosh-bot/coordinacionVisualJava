@@ -23,31 +23,31 @@ public class Resultado {
         return String.format("%02d:%02d.%03d", minutos, segundos, milisegundosRestantes);
     }
 
-    public int getErrores() {
+    public int obtenerErrores() {
         return errores;
     }
 
-    public long getCronometro() {
+    public long obtenerCronometro() {
         return cronometro;
     }
 
-    public String getCurp() {
+    public String obtenerCurp() {
         return curp;
     }
 
-    public String getEjercicio() {
+    public String obtenerEjercicio() {
         return ejercicio;
     }
 
-    public void setErrores(int errores) {
+    public void establecerErrores(int errores) {
         this.errores = errores;
     }
 
-    public void setCronometro(long cronometro) {
+    public void establecerCronometro(long cronometro) {
         this.cronometro = cronometro;
     }
 
-    public void setCurp(String curp) {
+    public void establecerCurp(String curp) {
         this.curp = curp;
     }
 

@@ -86,7 +86,7 @@ public class ControlActividad{
                 "Coordinación Visual",
                 JOptionPane.WARNING_MESSAGE);
                 i++;
-                resultadoControl.setErrores(i);
+                resultadoControl.establecerErrores(i);
         }
         
         this.colorSeleccionado = "";
@@ -99,7 +99,7 @@ public class ControlActividad{
         long segundosTranscurridos = (tiempoFin - this.tiempoInicio) / 1000;
         
         // Inyectamos el tiempo final en tu entidad
-        resultadoControl.setCronometro(segundosTranscurridos);
+        resultadoControl.establecerCronometro(segundosTranscurridos);
         
         // Mandamos a guardar usando tu controlador de archivos
         boolean exito = manejadorArchivos.guardarResultado(resultadoControl);
